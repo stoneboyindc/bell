@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="zyURKda3w0o5X8o7zaGs75sDWcnXtI5VFO25ZfQT5N8" />
+
+  <title>Mindfulness Bell</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="css/mediaelementplayer.css" /></code>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="js/jquery.cookie.js"></script>
+  <script src="js/mediaelement-and-player.min.js"></script>
+  <script src="js/mb.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+  $(function() {
+    $( "#accordion" ).accordion();
+/*
+    $( "#check" ).button();
+    $( "#format" ).buttonset();	
+	
+    $("#button").click( function() {
+             alert('button clicked');
+           }
+    );	
+*/
+  });
+
+  </script>
+  <style id="antiClickjacking">body{display:none !important;}</style>
+<style>
+html, body	{ height:100%; }
+body { margin:0; padding:0; overflow:auto; text-align:center; 
+/* background-color: #70B2EE; */
+/* background-image:url('assets/background.jpg'); }  */
+background-image:url('bg.php');
+background-size:cover; }
+		  
+/*this is what we want the div to look like*/
+div.topleft {
+	display:block;
+	/*set the div in the top left corner*/
+	position:absolute;
+	top:0;
+	left:0;
+	//width:40px;
+	border-style:hidden;
+	border-width:2px; 
+	overflow:hidden;
+	//border:1px solid #ddd;
+}
+div#topLeft2 {
+	display:block;
+	/*set the div in the top left corner*/
+	position:absolute;
+	top: 35px;
+	left:0;
+	border-style:hidden;
+	border-width:2px; 
+	overflow:hidden;
+}				  
+div#bottomRight {
+	display:block;
+	/*set the div in the top left corner*/
+	position:absolute;
+	bottom:0;
+	right:0;
+	border-style:hidden;
+	border-width:2px; 
+	overflow:hidden;
+}
+div#topRight {
+	display:block;
+	position:absolute;
+	top:0;
+	right:0;
+	border-style:hidden;
+	border-width:2px; 
+	overflow:hidden;
+}
+div#bottomLeft {
+	display:block;
+	position:absolute;
+	bottom:0;
+	left:0;
+	border-style:hidden;
+	border-width:2px; 
+	overflow:hidden;
+}			
+.mejs-container{
+  margin-left:auto;
+  margin-right:auto;
+}			
+</style>
+  <script type="text/javascript">
+  if (self === top) {
+    var antiClickjacking = document.getElementById("antiClickjacking");
+    antiClickjacking.parentNode.removeChild(antiClickjacking);
+  } else {
+    top.location = self.location;
+  }
+  
+function donate() {
+	window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624");
+}
+</script>
+
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+</script>
+<script type="text/javascript">
+	try {
+		var pageTracker = _gat._getTracker("UA-5028162-5");
+		// Cookied already: 
+		pageTracker._trackPageview();
+	} catch(err) {}
+</script>
+
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<style>
+html, body	{ 
+ width:100%; height:100%;
+ font-family: Arial,sans-serif;
+ font-size: small;
+ }
+body { 
+	margin:0; padding:0; overflow:auto; text-align:center; 
+	background-image:url('bg.php');
+	background-size:cover; 
+	}
+
+#accordion { opacity: 0.6; }
+
+</style>
+</head>
+<body onload="init()" onunload="cleanUp()" >
+
+<div align="center">
+
+<h1>Mindfulness Bell</h1>
+
+Current Time: <span id="theTime">&nbsp;</span>
+<p>
+<table width="70%">
+<tr>
+<td style="text-align:center" >
+    Welcome to the online Mindfulness Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the world take pleasure
+ in stopping and consciously breathing in and out three times when they hear the sound of the bell.
+Click below for examples of the sound made by the big and the small bell. Either can be used by inputing a time interval, 
+an exact time, or a random interval. Enjoy, and please email feedback and suggestions to mindfulnessbell at fungie.info. <span style="font-size: large;">&#9786;</span>
+</td>
+</tr>
+</table>
+<div>
+<table style="width: 100%;">
+    <tr>
+        <td style="text-align:center;">Big Bell</td>
+        <td style="text-align:center;">Small Bell</td>
+    </tr>
+    <tr>
+        <td id="bigBellTD" style="text-align:center;" />
+        <td id="smallBellTD" style="text-align:center;" />
+    </tr>
+</table>
+<script>
+$('#bigBellTD').append(getBell('bigID', 'big', true));
+$('#smallBellTD').append(getBell('smallID', 'small', true));
+$('audio,video').mediaelementplayer({
+	audioWidth: 250
+});
+var settings = {};
+</script>
+
+<div id="accordion">
+  <h3>Periodically</h3>
+  <div>
+<table style="border: 0;">
+    <tr>
+        <td style="text-align:left;">I would like a small bell to ring every</td>
+        <td><input type="number" id="interval" name="interval" size=4 min="1" max="1440" value=15></td>
+        <td>minutes.</td>
+        <td rowspan=2 style="text-align: center"><button id="btnPStart" onclick="startBells()">Set</button><button id="btnPStop" onclick="stopBells()">Stop</button></td>
+    </tr>
+    <tr>
+        <td style="text-align:left;">I would like a big bell to ring every</td>
+        <td><input type="number" id="intervalb" name="intervalb" size=4 min="1" max="1440" value=30></td>
+        <td>minutes.</td>
+    </tr>
+    <tr>
+        <td colspan=4 style="text-align:center"><span id="status" style="font-style: italic;">Waiting for input</span></td>
+    </tr>
+</table>
+  </div>
+  <h3>Random</h3>
+  <div>
+<table style="border: 0;">
+    <tr>
+        <td style="text-align:left;">I would like a bell to ring - randomly - between</td>
+        <td><input type="number" id="interval_randA" name="interval_randA" min="1" max="1440" size=4 value=15> and <input type="number" id="interval_randB" name="interval_randB" min="1" max="1440" size=4 value=60> minutes</td>
+        <td style="text-align: center"><button id="btnRStart" onclick="startRandomBell()">Set</button><button id="btnRStop" onclick="stopRandomBell()">Stop</button></td>
+    </tr>
+    <tr>
+        <td colspan=3 style="text-align:center"><span id="status_rand" style="font-style: italic;">Waiting for input</span></td>
+    </tr>
+</table>
+	</div>
+  <h3>Reminder</h3>
+  <div>
+<table id="reminderBell" style="border: 0;">
+	<tr>
+		<td>
+			<div ng-controller="MainCtrl">
+				<button ng-click="add()">Add Reminder Bell</button>
+				<button ng-click="delete()">Delete Reminder Bell</button>
+			</div>
+		</td>
+	</tr>
+</table>
+	</div>
+  <h3>Hourly</h3>
+  <div>
+<table style="border: 0;">
+    <tr>
+        <td style="text-align:left;">I would like a bell ringing hourly on the hour.</td>
+        <td style="text-align: center"><button id="btnHourlyBell" onclick="hourlyBell()">Set</button></td>
+    </tr>
+    <td colspan=5 style="text-align:center"><span id="status_hourly" style="font-style: italic;">Waiting for input</span></td>
+    </tr>
+</table>
+	</div>
+</div>
+</div>
+</div>
+<!-- Create Periodically bell here -->
+<table id="hiddenDiv" style="display: none;" />
+<script>
+$('#hiddenDiv').append(getBell('G_BigID', 'big'));
+$('#hiddenDiv').append(getBell('G_SmallID', 'small'));
+</script>
+</body>
+</html>
