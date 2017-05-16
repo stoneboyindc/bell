@@ -249,12 +249,15 @@ function stopClock() {
 	Hourly Bell
 */
 function playHourlyBell() {
-	document.getElementById('G_BigID').play();
+	var d = new Date();
+	if (d.getMinutes() == 0) {
+		document.getElementById('G_BigID').play();
+	}
 }
 
 function callEveryHour() {
 	playHourlyBell();
-    setInterval(playHourlyBell, 1000 * 60 * 60);
+    setInterval(playHourlyBell, 1000 * 60 );
 }
 
 function hourlyBell() {
