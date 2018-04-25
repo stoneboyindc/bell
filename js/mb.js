@@ -248,6 +248,9 @@ function stopClock() {
 /*
 	Hourly Bell
 */
+var timerID_hb_int=null;
+var timerID_hb=null;
+
 function playHourlyBell() {
 	var d = new Date();
 	if (d.getMinutes() == 0) {
@@ -257,20 +260,32 @@ function playHourlyBell() {
 
 function callEveryHour() {
 	playHourlyBell();
-    setInterval(playHourlyBell, 1000 * 60 );
+    timerID_hb_int = setInterval(playHourlyBell, 1000 * 60 );
 }
 
 function hourlyBell() {
 	setStatus("status_hourly","Hourly Bell started");
 	$('#btnHourlyBell').prop('disabled', true);
+	$('#btnStopHourlyBell').prop('disabled', false);
 	var d = new Date(),
 	h = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1, 0, 0, 0),
 	e = h - d;
     if (e > 100) { // some arbitrary time period
-        setTimeout(callEveryHour, e);
+        timerID_hb = setTimeout(callEveryHour, e);
     }
 }
 
+function stopHourlyBell() {
+	setStatus("status_hourly","Waiting for input");
+	$('#btnHourlyBell').prop('disabled', false);
+	$('#btnStopHourlyBell').prop('disabled', true);
+	if (timerID_hb) {
+		clearTimeout(timerID_hb);
+	}
+	if (timerID_hb_int) {
+		clearInterval(timerID_hb_int);
+	}
+}
 
 function init() {
     startClock();
