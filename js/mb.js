@@ -9,9 +9,9 @@
 	} 
 	var $srcbell;
 	if (bellType == 'big') {
-		$srcbell = $('<source/>', {src: "http://www.fungie.info/bell/assets/Bell2.mp3"});
+		$srcbell = $('<source/>', {src: "/bell/assets/Bell2.mp3"});
 	} else {
-		$srcbell = $('<source/>', {src: "http://www.fungie.info/bell/assets/sBell2.mp3"});
+		$srcbell = $('<source/>', {src: "/bell/assets/sBell2.mp3"});
 	}	
 	$obj.append($srcbell);
 	return $obj;
@@ -276,6 +276,7 @@ function hourlyBell() {
 }
 
 function stopHourlyBell() {
+	document.getElementById('G_BigID').pause();
 	setStatus("status_hourly","Waiting for input");
 	$('#btnHourlyBell').prop('disabled', false);
 	$('#btnStopHourlyBell').prop('disabled', true);
