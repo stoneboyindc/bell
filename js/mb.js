@@ -9,9 +9,9 @@
 	} 
 	var $srcbell;
 	if (bellType == 'big') {
-		$srcbell = $('<source/>', {src: "/bell/assets/Bell2.mp3"});
+		$srcbell = $('<source/>', {src: "assets/Bell2.mp3"});
 	} else {
-		$srcbell = $('<source/>', {src: "/bell/assets/sBell2.mp3"});
+		$srcbell = $('<source/>', {src: "assets/sBell2.mp3"});
 	}	
 	$obj.append($srcbell);
 	return $obj;
