@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html ng-app="app">
+
 <head>
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="zyURKda3w0o5X8o7zaGs75sDWcnXtI5VFO25ZfQT5N8" />
-  <meta name="description" content="Inspired by the teaching of Thich Nhat Hanh, Awakening/Mindfulness bells can be set to remind you throughout the day while you are at the computer.">
+  <meta name="description"
+    content="Inspired by the teaching of Thich Nhat Hanh, Awakening/Mindfulness bells can be set to remind you throughout the day while you are at the computer.">
   <title>Awakening Bell</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" href="css/mediaelementplayer.css" /></code>
@@ -16,228 +18,273 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
   <script src="js/app.js"></script>
   <script>
-  $(function() {
-    $( "#accordion" ).accordion();
-  });
+    $(function () {
+      $("#accordion").accordion();
+    });
 
   </script>
-  <style id="antiClickjacking">body{display:none !important;}</style>
-<style>
-html, body	{ height:100%; }
-body { margin:0; padding:0; overflow:auto; text-align:center; 
-/* background-color: #70B2EE; */
-/* background-image:url('assets/background.jpg'); }  */
-/* background-image:url('bg.php'); */
-background-size:cover; }
-		  
-/*this is what we want the div to look like*/
-div.topleft {
-	display:block;
-	/*set the div in the top left corner*/
-	position:absolute;
-	top:0;
-	left:0;
-	//width:40px;
-	border-style:hidden;
-	border-width:2px; 
-	overflow:hidden;
-	//border:1px solid #ddd;
-}
-div#topLeft2 {
-	display:block;
-	/*set the div in the top left corner*/
-	position:absolute;
-	top: 35px;
-	left:0;
-	border-style:hidden;
-	border-width:2px; 
-	overflow:hidden;
-}				  
-div#bottomRight {
-	display:block;
-	/*set the div in the top left corner*/
-	position:absolute;
-	bottom:0;
-	right:0;
-	border-style:hidden;
-	border-width:2px; 
-	overflow:hidden;
-}
-div#topRight {
-	display:block;
-	position:absolute;
-	top:0;
-	right:0;
-	border-style:hidden;
-	border-width:2px; 
-	overflow:hidden;
-}
-div#bottomLeft {
-	display:block;
-	position:absolute;
-	bottom:0;
-	left:0;
-	border-style:hidden;
-	border-width:2px; 
-	overflow:hidden;
-}			
-.mejs-container{
-  margin-left:auto;
-  margin-right:auto;
-}
-	
-</style>
+  <style id="antiClickjacking">
+    body {
+      display: none !important;
+    }
+  </style>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      text-align: center;
+      /* background-color: #70B2EE; */
+      /* background-image:url('assets/background.jpg'); }  */
+      /* background-image:url('bg.php'); */
+      background-size: cover;
+    }
+
+    /*this is what we want the div to look like*/
+    div.topleft {
+      display: block;
+      /*set the div in the top left corner*/
+      position: absolute;
+      top: 0;
+      left: 0;
+      //width:40px;
+      border-style: hidden;
+      border-width: 2px;
+      overflow: hidden;
+      //border:1px solid #ddd;
+    }
+
+    div#topLeft2 {
+      display: block;
+      /*set the div in the top left corner*/
+      position: absolute;
+      top: 35px;
+      left: 0;
+      border-style: hidden;
+      border-width: 2px;
+      overflow: hidden;
+    }
+
+    div#bottomRight {
+      display: block;
+      /*set the div in the top left corner*/
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-style: hidden;
+      border-width: 2px;
+      overflow: hidden;
+    }
+
+    div#topRight {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-style: hidden;
+      border-width: 2px;
+      overflow: hidden;
+    }
+
+    div#bottomLeft {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-style: hidden;
+      border-width: 2px;
+      overflow: hidden;
+    }
+
+    .mejs-container {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
   <script type="text/javascript">
-  if (self === top) {
-    var antiClickjacking = document.getElementById("antiClickjacking");
-    antiClickjacking.parentNode.removeChild(antiClickjacking);
-  } else {
-    top.location = self.location;
-  }
-  
-function donate() {
-	window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624");
-}
-</script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YKDP5HJPQJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    if (self === top) {
+      var antiClickjacking = document.getElementById("antiClickjacking");
+      antiClickjacking.parentNode.removeChild(antiClickjacking);
+    } else {
+      top.location = self.location;
+    }
 
-  gtag('config', 'G-YKDP5HJPQJ');
-</script>
-<style>
-html, body	{ 
- width:100%; height:100%;
- font-family: Arial,sans-serif;
- font-size: small;
- }
-body { 
-	margin:0; padding:0; overflow:auto; text-align:center; 
-	/* background-image:url('bg.php'); */
-	background-size:cover; 
-	}
+    function donate() {
+      window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624");
+    }
+  </script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YKDP5HJPQJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-#accordion { opacity: 0.6; }
+    gtag('config', 'G-YKDP5HJPQJ');
+  </script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      font-size: small;
+    }
 
-</style>
-<script>
-  $(document).ready(function(){
-      let images = ["background-1600.jpg","DSCN2026-1600.jpg","huanshang-1600.jpg","IMG_4295-1600.jpg","kamakura-1600.jpg",
-      "Bros_on_the_rock-1600.jpg","hongzhou-1600.jpg","IMG_0641-1600.jpg","jerusalem-1600.jpg","southafrica-1600.jpg"];
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      text-align: center;
+      /* background-image:url('bg.php'); */
+      background-size: cover;
+    }
+
+    #accordion {
+      opacity: 0.6;
+    }
+  </style>
+  <script>
+    $(document).ready(function () {
+      let images = ["background-1600.jpg", "DSCN2026-1600.jpg", "huanshang-1600.jpg", "IMG_4295-1600.jpg", "kamakura-1600.jpg",
+        "Bros_on_the_rock-1600.jpg", "hongzhou-1600.jpg", "IMG_0641-1600.jpg", "jerusalem-1600.jpg", "southafrica-1600.jpg"];
       $('body').css("background-image", "url(assets/" + images[new Date().getSeconds() % 10] + ")");
- 
-  });
-</script>
+      fetch('https://us-central1-reporting-7b4a1.cloudfunctions.net/app/reporting')
+        .then((response) => response.json())
+        .then((data) => {
+          const sc = document.getElementById('sessionCount');
+          sc.innerText = data.data;
+        });
+    });
+  </script>
 </head>
-<body onload="init()" onunload="cleanUp()" >
-<div id="bottomLeft">
-<button onClick="donate()"><span style="font: 11px arial,sans-serif;">Support this site?</span></button>
-</div>
-<div align="center">
 
-<h1>Awakening Bell</h1>
-
-Current Time: <span id="theTime">&nbsp;</span>
-<p>
-<table width="70%">
-<tr>
-<td style="text-align:center" >
-    Welcome to the online Awakening Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the world take pleasure
- in stopping and consciously breathing in and out three times when they hear the sound of the bell.
-Click below for examples of the sound made by the big and the small bell. Either can be used by inputing a time interval, 
-an exact time, or a random interval. Enjoy, and please email feedback and suggestions to awakeningbelldotorg at gmail.com. <span style="font-size: large;">&#9786;</span>
-</td>
-</tr>
-</table>
-<div>
-<table style="width: 100%;">
-    <tr>
-        <td style="text-align:center;">Big Bell</td>
-        <td style="text-align:center;">Small Bell</td>
-    </tr>
-    <tr>
-        <td id="bigBellTD" style="text-align:center;" />
-        <td id="smallBellTD" style="text-align:center;" />
-    </tr>
-</table>
-<script>
-$('#bigBellTD').append(getBell('bigID', 'big', true));
-$('#smallBellTD').append(getBell('smallID', 'small', true));
-$('audio,video').mediaelementplayer({
-	audioWidth: 250
-});
-var settings = {};
-</script>
-
-<div id="accordion">
-  <h3>Periodically</h3>
-  <div>
-<table style="border: 0;">
-    <tr>
-        <td style="text-align:left;">I would like a small bell to ring every</td>
-        <td><input type="number" id="interval" name="interval" size=4 min="1" max="1440" value=15></td>
-        <td>minutes.</td>
-        <td rowspan=2 style="text-align: center"><button id="btnPStart" onclick="startBells()">Set</button><button id="btnPStop" onclick="stopBells()">Stop</button></td>
-    </tr>
-    <tr>
-        <td style="text-align:left;">I would like a big bell to ring every</td>
-        <td><input type="number" id="intervalb" name="intervalb" size=4 min="1" max="1440" value=30></td>
-        <td>minutes.</td>
-    </tr>
-    <tr>
-        <td colspan=4 style="text-align:center"><span id="status" style="font-style: italic;">Waiting for input</span></td>
-    </tr>
-</table>
+<body onload="init()" onunload="cleanUp()">
+  <div id="topRight">
+    <span style="font: 11px arial,sans-serif;">There are <span id="sessionCount"></span> meditators since yesterday. &#128591; </span>
   </div>
-  <h3>Random</h3>
-  <div>
-<table style="border: 0;">
-    <tr>
-        <td style="text-align:left;">I would like a bell to ring - randomly - between</td>
-        <td><input type="number" id="interval_randA" name="interval_randA" min="1" max="1440" size=4 value=15> and <input type="number" id="interval_randB" name="interval_randB" min="1" max="1440" size=4 value=60> minutes</td>
-        <td style="text-align: center"><button id="btnRStart" onclick="startRandomBell()">Set</button><button id="btnRStop" onclick="stopRandomBell()">Stop</button></td>
-    </tr>
-    <tr>
-        <td colspan=3 style="text-align:center"><span id="status_rand" style="font-style: italic;">Waiting for input</span></td>
-    </tr>
-</table>
-	</div>
-  <h3>Reminder</h3>
-  <div>
-<table id="reminderBell" style="border: 0;">
-	<tr>
-		<td>
-			<div ng-controller="MainCtrl">
-				<button ng-click="add()">Add Reminder Bell</button>
-				<button ng-click="delete()">Delete Reminder Bell</button>
-			</div>
-		</td>
-	</tr>
-</table>
-	</div>
-  <h3>Hourly</h3>
-  <div>
-<table style="border: 0;">
-    <tr>
-        <td style="text-align:left;">I would like a bell ringing hourly on the hour.</td>
-        <td style="text-align: center"><button id="btnHourlyBell" onclick="hourlyBell()">Set</button></td>
-        <td style="text-align: center"><button id="btnStopHourlyBell" onclick="stopHourlyBell()">Stop</button></td>
-    </tr>
-    <td colspan=5 style="text-align:center"><span id="status_hourly" style="font-style: italic;">Waiting for input</span></td>
-    </tr>
-</table>
-	</div>
-</div>
-</div>
-</div>
-<!-- Create Periodically bell here -->
-<table id="hiddenDiv" style="display: none;" />
-<script>
-$('#hiddenDiv').append(getBell('G_BigID', 'big'));
-$('#hiddenDiv').append(getBell('G_SmallID', 'small'));
-</script>
+  <div id="bottomLeft">
+    <button onClick="donate()"><span style="font: 11px arial,sans-serif;">Support this site?</span></button>
+  </div>
+  <div align="center">
+
+    <h1>Awakening Bell</h1>
+
+    Current Time: <span id="theTime">&nbsp;</span>
+    <p>
+    <table width="70%">
+      <tr>
+        <td style="text-align:center">
+          Welcome to the online Awakening Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the
+          world take pleasure
+          in stopping and consciously breathing in and out three times when they hear the sound of the bell.
+          Click below for examples of the sound made by the big and the small bell. Either can be used by inputing a
+          time interval,
+          an exact time, or a random interval. Enjoy, and please email feedback and suggestions to awakeningbelldotorg
+          at gmail.com. <span style="font-size: large;">&#9786;</span>
+        </td>
+      </tr>
+    </table>
+    <div>
+      <table style="width: 100%;">
+        <tr>
+          <td style="text-align:center;">Big Bell</td>
+          <td style="text-align:center;">Small Bell</td>
+        </tr>
+        <tr>
+          <td id="bigBellTD" style="text-align:center;" />
+          <td id="smallBellTD" style="text-align:center;" />
+        </tr>
+      </table>
+      <script>
+        $('#bigBellTD').append(getBell('bigID', 'big', true));
+        $('#smallBellTD').append(getBell('smallID', 'small', true));
+        $('audio,video').mediaelementplayer({
+          audioWidth: 250
+        });
+        var settings = {};
+      </script>
+
+      <div id="accordion">
+        <h3>Periodically</h3>
+        <div>
+          <table style="border: 0;">
+            <tr>
+              <td style="text-align:left;">I would like a small bell to ring every</td>
+              <td><input type="number" id="interval" name="interval" size=4 min="1" max="1440" value=15></td>
+              <td>minutes.</td>
+              <td rowspan=2 style="text-align: center"><button id="btnPStart" onclick="startBells()">Set</button><button
+                  id="btnPStop" onclick="stopBells()">Stop</button></td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">I would like a big bell to ring every</td>
+              <td><input type="number" id="intervalb" name="intervalb" size=4 min="1" max="1440" value=30></td>
+              <td>minutes.</td>
+            </tr>
+            <tr>
+              <td colspan=4 style="text-align:center"><span id="status" style="font-style: italic;">Waiting for
+                  input</span></td>
+            </tr>
+          </table>
+        </div>
+        <h3>Random</h3>
+        <div>
+          <table style="border: 0;">
+            <tr>
+              <td style="text-align:left;">I would like a bell to ring - randomly - between</td>
+              <td><input type="number" id="interval_randA" name="interval_randA" min="1" max="1440" size=4 value=15> and
+                <input type="number" id="interval_randB" name="interval_randB" min="1" max="1440" size=4 value=60>
+                minutes</td>
+              <td style="text-align: center"><button id="btnRStart" onclick="startRandomBell()">Set</button><button
+                  id="btnRStop" onclick="stopRandomBell()">Stop</button></td>
+            </tr>
+            <tr>
+              <td colspan=3 style="text-align:center"><span id="status_rand" style="font-style: italic;">Waiting for
+                  input</span></td>
+            </tr>
+          </table>
+        </div>
+        <h3>Reminder</h3>
+        <div>
+          <table id="reminderBell" style="border: 0;">
+            <tr>
+              <td>
+                <div ng-controller="MainCtrl">
+                  <button ng-click="add()">Add Reminder Bell</button>
+                  <button ng-click="delete()">Delete Reminder Bell</button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <h3>Hourly</h3>
+        <div>
+          <table style="border: 0;">
+            <tr>
+              <td style="text-align:left;">I would like a bell ringing hourly on the hour.</td>
+              <td style="text-align: center"><button id="btnHourlyBell" onclick="hourlyBell()">Set</button></td>
+              <td style="text-align: center"><button id="btnStopHourlyBell" onclick="stopHourlyBell()">Stop</button>
+              </td>
+            </tr>
+            <td colspan=5 style="text-align:center"><span id="status_hourly" style="font-style: italic;">Waiting for
+                input</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Create Periodically bell here -->
+  <table id="hiddenDiv" style="display: none;" />
+  <script>
+    $('#hiddenDiv').append(getBell('G_BigID', 'big'));
+    $('#hiddenDiv').append(getBell('G_SmallID', 'small'));
+  </script>
 </body>
+
 </html>
