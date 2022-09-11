@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="zyURKda3w0o5X8o7zaGs75sDWcnXtI5VFO25ZfQT5N8" />
-  <meta name="description" content="Inspired by the teaching of Thich Nhat Hanh, Mindfulness/Awakening bells can be set to remind you throughout the day while you are at the computer.">
-  <title>Mindfulness Bell</title>
+  <meta name="description" content="Inspired by the teaching of Thich Nhat Hanh, Awakening/Mindfulness bells can be set to remind you throughout the day while you are at the computer.">
+  <title>Awakening Bell</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" href="css/mediaelementplayer.css" /></code>
   <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
@@ -84,7 +84,8 @@ div#bottomLeft {
 .mejs-container{
   margin-left:auto;
   margin-right:auto;
-}			
+}
+	
 </style>
   <script type="text/javascript">
   if (self === top) {
@@ -98,27 +99,14 @@ function donate() {
 	window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624");
 }
 </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YKDP5HJPQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-
-</script>
-<script type="text/javascript">
-	try {
-		var pageTracker = _gat._getTracker("UA-5028162-5");
-		// Cookied already: 
-		pageTracker._trackPageview();
-	} catch(err) {}
-</script>
-
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
+  gtag('config', 'G-YKDP5HJPQJ');
 </script>
 <style>
 html, body	{ 
@@ -135,19 +123,29 @@ body {
 #accordion { opacity: 0.6; }
 
 </style>
+<script>
+  $(document).ready(function(){
+      let images = ["background-1600.jpg","DSCN2026-1600.jpg","huanshang-1600.jpg","IMG_4295-1600.jpg","kamakura-1600.jpg",
+      "Bros_on_the_rock-1600.jpg","hongzhou-1600.jpg","IMG_0641-1600.jpg","jerusalem-1600.jpg","southafrica-1600.jpg"];
+      $('body').css("background-image", "url(assets/" + images[new Date().getSeconds() % 10] + ")");
+ 
+  });
+</script>
 </head>
 <body onload="init()" onunload="cleanUp()" >
-
+<div id="bottomLeft">
+<button onClick="donate()"><span style="font: 11px arial,sans-serif;">Support this site?</span></button>
+</div>
 <div align="center">
 
-<h1>Mindfulness Bell</h1>
+<h1>Awakening Bell</h1>
 
 Current Time: <span id="theTime">&nbsp;</span>
 <p>
 <table width="70%">
 <tr>
 <td style="text-align:center" >
-    Welcome to the online Mindfulness Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the world take pleasure
+    Welcome to the online Awakening Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the world take pleasure
  in stopping and consciously breathing in and out three times when they hear the sound of the bell.
 Click below for examples of the sound made by the big and the small bell. Either can be used by inputing a time interval, 
 an exact time, or a random interval. Enjoy, and please email feedback and suggestions to awakeningbelldotorg at gmail.com. <span style="font-size: large;">&#9786;</span>
