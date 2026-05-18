@@ -1,290 +1,1029 @@
 <!DOCTYPE html>
-<html ng-app="app">
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="google-site-verification" content="zyURKda3w0o5X8o7zaGs75sDWcnXtI5VFO25ZfQT5N8" />
-  <meta name="description"
-    content="Inspired by the teaching of Thich Nhat Hanh, Awakening/Mindfulness bells can be set to remind you throughout the day while you are at the computer.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="google-site-verification" content="zyURKda3w0o5X8o7zaGs75sDWcnXtI5VFO25ZfQT5N8">
+  <meta name="description" content="Inspired by the teaching of Thich Nhat Hanh, Awakening/Mindfulness bells can be set to remind you throughout the day while you are at the computer.">
+  <meta name="theme-color" content="#f3ede1">
   <title>Awakening Bell</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-  <link rel="stylesheet" href="css/mediaelementplayer.css" /></code>
-  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-  <script src="js/jquery.cookie.js"></script>
-  <script src="js/mediaelement-and-player.min.js"></script>
-  <script src="js/mb.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
-  <script src="js/app.js"></script>
-  <script>
-    $(function () {
-      $("#accordion").accordion();
-    });
 
+  <link rel="preload" as="audio" href="assets/Bell2.mp3">
+  <link rel="preload" as="audio" href="assets/sBell2.mp3">
+
+  <style id="antiClickjacking">body { display: none !important; }</style>
+  <script>
+    if (self === top) {
+      const ac = document.getElementById('antiClickjacking');
+      ac.parentNode.removeChild(ac);
+    } else {
+      top.location = self.location;
+    }
   </script>
-  <style id="antiClickjacking">
-    body {
-      display: none !important;
-    }
-  </style>
+
   <style>
-    html,
-    body {
-      height: 100%;
+    :root {
+      --ink: #2a2520;
+      --ink-soft: #6b6157;
+      --ink-faint: #a59c91;
+      --paper: #f7f2e8;
+      --paper-warm: #fffaf0;
+      --card: rgba(255, 252, 245, 0.72);
+      --card-border: rgba(255, 255, 255, 0.55);
+      --accent: #b07d3a;
+      --accent-soft: rgba(176, 125, 58, 0.14);
+      --accent-strong: #8a5f26;
+      --shadow: 0 2px 6px rgba(40, 28, 12, 0.08), 0 14px 40px rgba(40, 28, 12, 0.14);
+      --radius: 14px;
+      --serif: 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
     }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
 
     body {
       margin: 0;
       padding: 0;
-      overflow: auto;
-      text-align: center;
-      /* background-color: #70B2EE; */
-      /* background-image:url('assets/background.jpg'); }  */
-      /* background-image:url('bg.php'); */
+      font-family: var(--sans);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.55;
+      background-color: var(--paper);
       background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /*this is what we want the div to look like*/
-    div.topleft {
-      display: block;
-      /*set the div in the top left corner*/
-      position: absolute;
-      top: 0;
-      left: 0;
-      //width:40px;
-      border-style: hidden;
-      border-width: 2px;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%,
+          rgba(247, 242, 232, 0.0) 0%,
+          rgba(247, 242, 232, 0.12) 60%,
+          rgba(40, 28, 12, 0.18) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 40px;
+    }
+
+    .topbar .visitors {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 252, 245, 0.55);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+    }
+    .topbar .visitors strong { color: var(--ink); font-weight: 600; }
+
+    .support-btn {
+      background: rgba(255, 252, 245, 0.55);
+      border: 1px solid var(--card-border);
+      color: var(--ink);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      transition: all 180ms ease;
+    }
+    .support-btn:hover, .support-btn:focus-visible {
+      color: var(--accent-strong);
+      border-color: var(--accent);
+      background: rgba(176, 125, 58, 0.18);
+      outline: none;
+    }
+
+    header.hero {
+      text-align: center;
+      margin-bottom: 32px;
+      text-shadow: 0 1px 3px rgba(255, 250, 240, 0.7), 0 0 24px rgba(255, 250, 240, 0.5);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(38px, 7vw, 56px);
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+
+    .clock {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+    }
+
+    .clock .tz {
+      margin-left: 6px;
+      color: var(--ink-soft);
+    }
+
+    .intro {
+      max-width: 56ch;
+      margin: 0 auto 36px;
+      padding: 16px 22px;
+      text-align: center;
+      color: var(--ink);
+      font-size: 15.5px;
+      line-height: 1.7;
+      background: rgba(255, 252, 245, 0.62);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: var(--shadow);
+    }
+
+    .intro .smile { color: var(--accent); }
+
+    /* Bell preview row */
+    .previews {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .preview {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+    }
+
+    .preview-label {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .play-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--paper-warm);
+      color: var(--accent-strong);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 200ms ease;
+      box-shadow: 0 1px 2px rgba(60, 40, 20, 0.06);
+    }
+    .play-btn:hover, .play-btn:focus-visible {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      transform: scale(1.04);
+      outline: none;
+    }
+    .play-btn svg { width: 22px; height: 22px; display: block; margin-left: 2px; }
+    .play-btn.ringing {
+      animation: pulse 1.6s ease-out;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 var(--accent-soft); }
+      100% { box-shadow: 0 0 0 24px rgba(176, 125, 58, 0); }
+    }
+
+    /* Modes */
+    .modes {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mode {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
       overflow: hidden;
-      //border:1px solid #ddd;
     }
 
-    div#topLeft2 {
-      display: block;
-      /*set the div in the top left corner*/
-      position: absolute;
-      top: 35px;
-      left: 0;
-      border-style: hidden;
-      border-width: 2px;
-      overflow: hidden;
+    .mode > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--serif);
+      font-size: 19px;
+      color: var(--ink);
+      user-select: none;
+      transition: background 160ms ease;
     }
+    .mode > summary:hover { background: rgba(176, 125, 58, 0.04); }
+    .mode > summary::-webkit-details-marker { display: none; }
 
-    div#bottomRight {
-      display: block;
-      /*set the div in the top left corner*/
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      border-style: hidden;
-      border-width: 2px;
-      overflow: hidden;
+    .mode > summary .chev {
+      color: var(--ink-faint);
+      transition: transform 220ms ease;
     }
+    .mode[open] > summary .chev { transform: rotate(180deg); color: var(--accent); }
 
-    div#topRight {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      border-style: hidden;
-      border-width: 2px;
-      overflow: hidden;
-    }
-
-    div#bottomLeft {
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      border-style: hidden;
-      border-width: 2px;
-      overflow: hidden;
-    }
-
-    .mejs-container {
+    .mode .summary-status {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--ink-faint);
       margin-left: auto;
-      margin-right: auto;
+      margin-right: 8px;
+      transition: color 200ms ease;
+    }
+    .mode.active .summary-status { color: var(--accent); font-style: normal; }
+    .mode.active > summary { background: rgba(176, 125, 58, 0.06); }
+
+    .mode-body {
+      padding: 4px 20px 20px;
+      border-top: 1px solid var(--card-border);
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+
+    .mode-body p { margin: 14px 0; }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .field-row label {
+      flex-shrink: 0;
+    }
+
+    input[type="number"], select {
+      font: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--paper-warm);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      width: 72px;
+      text-align: center;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+    input[type="number"]:focus-visible, select:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    select { width: auto; padding-right: 28px; }
+
+    .btn {
+      font: inherit;
+      font-size: 14px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+      background: var(--paper-warm);
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 160ms ease;
+      font-family: inherit;
+    }
+    .btn:hover:not(:disabled), .btn:focus-visible:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+      outline: none;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--paper-warm);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover:not(:disabled), .btn-primary:focus-visible:not(:disabled) {
+      background: var(--accent-strong);
+      border-color: var(--accent-strong);
+      color: var(--paper-warm);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(176, 125, 58, 0.06);
+      border-left: 2px solid var(--accent);
+      border-radius: 4px;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      font-style: italic;
+      min-height: 22px;
+    }
+    .status.idle { background: transparent; border-left-color: var(--card-border); color: var(--ink-faint); }
+
+    /* Reminders list */
+    .reminders-list {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .reminders-list:empty { display: none; }
+    .reminders-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--paper-warm);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    .reminders-list .rem-time {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .reminders-list .rem-meta {
+      color: var(--ink-faint);
+      font-size: 12.5px;
+      margin-left: 6px;
+    }
+    .reminders-list .rem-x {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink-faint);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 140ms ease;
+    }
+    .reminders-list .rem-x:hover, .reminders-list .rem-x:focus-visible {
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+      outline: none;
+    }
+
+    footer {
+      margin-top: 56px;
+      padding: 18px 22px;
+      border-radius: var(--radius);
+      background: rgba(255, 252, 245, 0.45);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 12.5px;
+      line-height: 1.8;
+    }
+    footer a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ink-faint);
+    }
+    footer a:hover, footer a:focus-visible {
+      color: var(--accent-strong);
+      border-bottom-color: var(--accent);
+      outline: none;
+    }
+
+    /* Small screens */
+    @media (max-width: 480px) {
+      .page { padding: 20px 14px 36px; }
+      .topbar { margin-bottom: 28px; font-size: 12px; }
+      .previews { gap: 10px; }
+      .preview { padding: 16px 12px; }
+      .mode > summary { padding: 14px 16px; font-size: 18px; }
+      .mode-body { padding: 4px 16px 18px; }
+      .field-row { gap: 6px; }
+      input[type="number"] { width: 64px; padding: 6px 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
     }
   </style>
-  <script type="text/javascript">
-    if (self === top) {
-      var antiClickjacking = document.getElementById("antiClickjacking");
-      antiClickjacking.parentNode.removeChild(antiClickjacking);
-    } else {
-      top.location = self.location;
-    }
 
-    function donate() {
-      window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624");
-    }
-  </script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YKDP5HJPQJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-YKDP5HJPQJ');
   </script>
-  <style>
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      font-size: small;
-    }
+</head>
+<body>
 
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: auto;
-      text-align: center;
-      /* background-image:url('bg.php'); */
-      background-size: cover;
-    }
+  <div class="page">
+    <div class="topbar">
+      <span class="visitors" aria-live="polite">
+        <strong id="sessionCount">·</strong> meditators since yesterday <span aria-hidden="true">🙏</span>
+      </span>
+      <button class="support-btn" onclick="donate()" type="button">Support this site</button>
+    </div>
 
-    #accordion {
-      opacity: 0.6;
-    }
-  </style>
+    <header class="hero">
+      <h1>Awakening Bell</h1>
+      <div class="clock" aria-label="Current time">
+        <span id="theTime">&nbsp;</span><span class="tz" id="theTZ"></span>
+      </div>
+    </header>
+
+    <p class="intro">
+      Inspired by the teaching of Thich Nhat Hanh. Many people around the world take pleasure in
+      stopping and consciously breathing in and out three times when they hear the sound of the bell.
+      Choose a bell below, then set an interval, exact time, or random rhythm.
+      <span class="smile" aria-hidden="true">☺</span>
+    </p>
+
+    <!-- Hidden bells used by the timers -->
+    <audio id="bigBell" preload="auto" src="assets/Bell2.mp3"></audio>
+    <audio id="smallBell" preload="auto" src="assets/sBell2.mp3"></audio>
+
+    <section class="previews" aria-label="Bell previews">
+      <div class="preview">
+        <div class="preview-label">Big Bell</div>
+        <button class="play-btn" type="button" data-preview="big" aria-label="Play big bell">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <div class="preview">
+        <div class="preview-label">Small Bell</div>
+        <button class="play-btn" type="button" data-preview="small" aria-label="Play small bell">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <div class="modes">
+
+      <details class="mode" id="modePeriodic" open>
+        <summary>
+          <span>Periodic</span>
+          <span class="summary-status" id="periodicSummary">Off</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="mode-body">
+          <div class="field-row">
+            <label for="interval">Ring a <strong>small bell</strong> every</label>
+            <input type="number" id="interval" min="1" max="1440" value="15">
+            <span>minutes.</span>
+          </div>
+          <div class="field-row">
+            <label for="intervalb">Ring a <strong>big bell</strong> every</label>
+            <input type="number" id="intervalb" min="1" max="1440" value="30">
+            <span>minutes.</span>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="btnPStart" type="button">Start</button>
+            <button class="btn" id="btnPStop" type="button" disabled>Stop</button>
+          </div>
+          <div class="status idle" id="status" aria-live="polite">Waiting for input</div>
+        </div>
+      </details>
+
+      <details class="mode" id="modeRandom">
+        <summary>
+          <span>Random</span>
+          <span class="summary-status" id="randomSummary">Off</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="mode-body">
+          <div class="field-row">
+            <label for="interval_randA">Ring a bell randomly between</label>
+            <input type="number" id="interval_randA" min="1" max="1440" value="15">
+            <span>and</span>
+            <input type="number" id="interval_randB" min="1" max="1440" value="60">
+            <span>minutes.</span>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="btnRStart" type="button">Start</button>
+            <button class="btn" id="btnRStop" type="button" disabled>Stop</button>
+          </div>
+          <div class="status idle" id="status_rand" aria-live="polite">Waiting for input</div>
+        </div>
+      </details>
+
+      <details class="mode" id="modeReminder">
+        <summary>
+          <span>Reminder</span>
+          <span class="summary-status" id="reminderSummary">None set</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="mode-body">
+          <div class="field-row">
+            <label for="rem_type">Ring a</label>
+            <select id="rem_type">
+              <option value="big">big</option>
+              <option value="small">small</option>
+            </select>
+            <label for="rem_hh">bell at</label>
+            <input type="number" id="rem_hh" min="0" max="23" value="9" aria-label="Hour (0-23)">
+            <span>:</span>
+            <input type="number" id="rem_mm" min="0" max="59" value="0" aria-label="Minute">
+            <span class="rem-meta">(24-hour clock — e.g. 22:30 is 10:30 pm)</span>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="btnRemAdd" type="button">Add reminder</button>
+          </div>
+          <ul class="reminders-list" id="remindersList" aria-label="Scheduled reminders"></ul>
+          <div class="status idle" id="status_reminder" aria-live="polite">No reminders scheduled.</div>
+        </div>
+      </details>
+
+      <details class="mode" id="modeHourly">
+        <summary>
+          <span>Hourly</span>
+          <span class="summary-status" id="hourlySummary">Off</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="mode-body">
+          <p>Ring the big bell on the top of every hour.</p>
+          <div class="actions">
+            <button class="btn btn-primary" id="btnHourlyBell" type="button">Start</button>
+            <button class="btn" id="btnStopHourlyBell" type="button" disabled>Stop</button>
+          </div>
+          <div class="status idle" id="status_hourly" aria-live="polite">Waiting for input</div>
+        </div>
+      </details>
+
+    </div>
+
+    <footer>
+      Feedback &amp; suggestions: <a href="mailto:awakeningbelldotorg@gmail.com">awakeningbelldotorg at gmail.com</a><br>
+      With gratitude to the teaching of Thich Nhat Hanh.
+    </footer>
+  </div>
+
   <script>
-    $(document).ready(function () {
-      let images = ["background-1600.jpg", "DSCN2026-1600.jpg", "huanshang-1600.jpg", "IMG_4295-1600.jpg", "kamakura-1600.jpg",
-        "Bros_on_the_rock-1600.jpg", "hongzhou-1600.jpg", "IMG_0641-1600.jpg", "jerusalem-1600.jpg", "southafrica-1600.jpg"];
-      $('body').css("background-image", "url(assets/" + images[new Date().getSeconds() % 10] + ")");
+    // ---------- Rotating background ----------
+    const images = [
+      "background-1600.jpg", "DSCN2026-1600.jpg", "huanshang-1600.jpg",
+      "IMG_4295-1600.jpg",   "kamakura-1600.jpg",  "Bros_on_the_rock-1600.jpg",
+      "hongzhou-1600.jpg",   "IMG_0641-1600.jpg",  "jerusalem-1600.jpg",
+      "southafrica-1600.jpg"
+    ];
+    document.body.style.backgroundImage = `url(assets/${images[new Date().getSeconds() % images.length]})`;
+
+    // ---------- Visitor counter ----------
+    // Reads a CDN-cached JSON value (refreshed hourly by a scheduled function).
+    // Browser & CDN cache headers do almost all the work — most loads never
+    // touch the function. Fails silently so the page never shows a broken count.
+    (function loadCounter() {
+      const el = document.getElementById('sessionCount');
       fetch('https://us-central1-reporting-7b4a1.cloudfunctions.net/app/reporting')
-        .then((response) => response.json())
-        .then((data) => {
-          const sc = document.getElementById('sessionCount');
-          sc.innerText = data.data;
-        });
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(d => {
+          const n = Number(d && d.data);
+          if (Number.isFinite(n) && n > 0) {
+            el.textContent = n.toLocaleString();
+          }
+        })
+        .catch(() => { /* leave the placeholder dot in place */ });
+    })();
+
+    // ---------- Donate ----------
+    function donate() {
+      window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S4YVKJH53F624', '_blank', 'noopener');
+    }
+
+    // ---------- Bells ----------
+    const bigBell = document.getElementById('bigBell');
+    const smallBell = document.getElementById('smallBell');
+
+    function ringBell(type, btn) {
+      const el = type === 'big' ? bigBell : smallBell;
+      try {
+        el.currentTime = 0;
+        el.play().catch(() => {});
+      } catch (e) {}
+      if (btn) {
+        btn.classList.remove('ringing');
+        // Force reflow to restart the animation
+        void btn.offsetWidth;
+        btn.classList.add('ringing');
+      }
+    }
+
+    // Preview buttons
+    document.querySelectorAll('[data-preview]').forEach(b => {
+      b.addEventListener('click', () => ringBell(b.dataset.preview, b));
+    });
+
+    // ---------- Clock ----------
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+    // Use the browser's locale and timezone for date + time formatting.
+    // `undefined` locale → browser default. Timezone is automatic from the user's system.
+    const clockFmt = new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'long',
+      timeStyle: 'medium'
+    });
+    const tzFmt = new Intl.DateTimeFormat(undefined, { timeZoneName: 'short' });
+    function currentTZLabel(d) {
+      const part = tzFmt.formatToParts(d).find(p => p.type === 'timeZoneName');
+      return part ? part.value : '';
+    }
+
+    function tick() {
+      const now = new Date();
+      const timeEl = document.getElementById('theTime');
+      const tzEl = document.getElementById('theTZ');
+      if (timeEl) timeEl.textContent = clockFmt.format(now);
+      if (tzEl) tzEl.textContent = currentTZLabel(now);
+    }
+    setInterval(tick, 1000); tick();
+
+    // ---------- Settings (localStorage) ----------
+    const SETTINGS_KEY = 'awakeningBell.settings';
+    const REMINDERS_KEY = 'awakeningBell.reminders';
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return {};
+    }
+    function saveSettings(s) {
+      try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (e) {}
+    }
+
+    const settings = Object.assign({
+      interval: 15, intervalb: 30,
+      interval_randA: 15, interval_randB: 60
+    }, loadSettings());
+
+    document.getElementById('interval').value        = settings.interval;
+    document.getElementById('intervalb').value       = settings.intervalb;
+    document.getElementById('interval_randA').value  = settings.interval_randA;
+    document.getElementById('interval_randB').value  = settings.interval_randB;
+
+    function setStatus(id, msg, active) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.toggle('idle', !active);
+    }
+    function setModeActive(modeId, summaryId, active, label) {
+      const mode = document.getElementById(modeId);
+      if (mode) mode.classList.toggle('active', !!active);
+      const s = document.getElementById(summaryId);
+      if (s) s.textContent = label;
+    }
+
+    function readNumber(id, min, max) {
+      const v = parseInt(document.getElementById(id).value, 10);
+      if (isNaN(v) || v < min || v > max) {
+        alert(`Please enter a number between ${min} and ${max}.`);
+        return null;
+      }
+      return v;
+    }
+
+    // ---------- Periodic ----------
+    let perSmallTimer = null, perBigTimer = null;
+    let perSmallNext = 0, perBigNext = 0;
+    let perCountdownTimer = null;
+
+    function startPeriodic() {
+      const small = readNumber('interval', 1, 1440);
+      const big = readNumber('intervalb', 1, 1440);
+      if (small == null || big == null) return;
+
+      stopPeriodic(false);
+      perSmallNext = Date.now() + small * 60_000;
+      perBigNext = Date.now() + big * 60_000;
+      perSmallTimer = setInterval(() => {
+        ringBell('small');
+        perSmallNext = Date.now() + small * 60_000;
+      }, small * 60_000);
+      perBigTimer = setInterval(() => {
+        ringBell('big');
+        perBigNext = Date.now() + big * 60_000;
+      }, big * 60_000);
+
+      btn('btnPStart', false); btn('btnPStop', true);
+      setModeActive('modePeriodic', 'periodicSummary', true, `every ${small}/${big} min`);
+
+      if (perCountdownTimer) clearInterval(perCountdownTimer);
+      perCountdownTimer = setInterval(updatePeriodicStatus, 1000);
+      updatePeriodicStatus();
+
+      settings.interval = small;
+      settings.intervalb = big;
+      saveSettings(settings);
+    }
+
+    function updatePeriodicStatus() {
+      const nextS = Math.max(0, perSmallNext - Date.now());
+      const nextB = Math.max(0, perBigNext - Date.now());
+      setStatus('status', `Next small bell in ${fmtCountdown(nextS)} · next big bell in ${fmtCountdown(nextB)}`, true);
+    }
+
+    function stopPeriodic(updateUI = true) {
+      if (perSmallTimer) { clearInterval(perSmallTimer); perSmallTimer = null; }
+      if (perBigTimer) { clearInterval(perBigTimer); perBigTimer = null; }
+      if (perCountdownTimer) { clearInterval(perCountdownTimer); perCountdownTimer = null; }
+      if (updateUI) {
+        btn('btnPStart', true); btn('btnPStop', false);
+        setModeActive('modePeriodic', 'periodicSummary', false, 'Off');
+        setStatus('status', 'Stopped.', false);
+      }
+    }
+
+    document.getElementById('btnPStart').addEventListener('click', startPeriodic);
+    document.getElementById('btnPStop').addEventListener('click', () => stopPeriodic(true));
+
+    // ---------- Random ----------
+    let randTimer = null, randNext = 0, randCountdownTimer = null, randA = 0, randB = 0;
+
+    function scheduleRandom() {
+      const ms = Math.floor(Math.random() * (randB - randA + 1)) + randA;
+      randNext = Date.now() + ms;
+      randTimer = setTimeout(() => {
+        ringBell('big');
+        scheduleRandom();
+      }, ms);
+    }
+
+    function startRandom() {
+      const a = readNumber('interval_randA', 1, 1440);
+      const b = readNumber('interval_randB', 1, 1440);
+      if (a == null || b == null) return;
+      if (a > b) { alert('First minute should be ≤ the second.'); return; }
+
+      stopRandom(false);
+      randA = a * 60_000;
+      randB = b * 60_000;
+      scheduleRandom();
+
+      btn('btnRStart', false); btn('btnRStop', true);
+      setModeActive('modeRandom', 'randomSummary', true, `random ${a}–${b} min`);
+
+      if (randCountdownTimer) clearInterval(randCountdownTimer);
+      randCountdownTimer = setInterval(updateRandomStatus, 1000);
+      updateRandomStatus();
+
+      settings.interval_randA = a;
+      settings.interval_randB = b;
+      saveSettings(settings);
+    }
+
+    function updateRandomStatus() {
+      const next = Math.max(0, randNext - Date.now());
+      setStatus('status_rand', `Next bell in ${fmtCountdown(next)}`, true);
+    }
+
+    function stopRandom(updateUI = true) {
+      if (randTimer) { clearTimeout(randTimer); randTimer = null; }
+      if (randCountdownTimer) { clearInterval(randCountdownTimer); randCountdownTimer = null; }
+      if (updateUI) {
+        btn('btnRStart', true); btn('btnRStop', false);
+        setModeActive('modeRandom', 'randomSummary', false, 'Off');
+        setStatus('status_rand', 'Stopped.', false);
+      }
+    }
+
+    document.getElementById('btnRStart').addEventListener('click', startRandom);
+    document.getElementById('btnRStop').addEventListener('click', () => stopRandom(true));
+
+    // ---------- Reminder ----------
+    let reminders = [];
+    const reminderTimers = new Map(); // id -> timeoutId
+
+    function loadReminders() {
+      try {
+        const raw = localStorage.getItem(REMINDERS_KEY);
+        if (raw) reminders = JSON.parse(raw) || [];
+      } catch (e) { reminders = []; }
+    }
+    function saveReminders() {
+      try { localStorage.setItem(REMINDERS_KEY, JSON.stringify(reminders)); } catch (e) {}
+    }
+
+    function nextOccurrence(hour, minute) {
+      const now = new Date();
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+      if (d.getTime() <= now.getTime()) d.setDate(d.getDate() + 1);
+      return d;
+    }
+
+    function scheduleReminder(r) {
+      const cancel = reminderTimers.get(r.id);
+      if (cancel) clearTimeout(cancel);
+      const fireAt = nextOccurrence(r.hour, r.minute).getTime();
+      const id = setTimeout(() => {
+        ringBell(r.bellType);
+        scheduleReminder(r); // re-schedule for the next day
+        renderReminders();
+      }, fireAt - Date.now());
+      reminderTimers.set(r.id, id);
+    }
+
+    function addReminder() {
+      const bellType = document.getElementById('rem_type').value;
+      const hh = readNumber('rem_hh', 0, 23);
+      const mm = readNumber('rem_mm', 0, 59);
+      if (hh == null || mm == null) return;
+      const r = { id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7), bellType, hour: hh, minute: mm };
+      reminders.push(r);
+      saveReminders();
+      scheduleReminder(r);
+      renderReminders();
+    }
+
+    function removeReminder(id) {
+      const t = reminderTimers.get(id);
+      if (t) { clearTimeout(t); reminderTimers.delete(id); }
+      reminders = reminders.filter(r => r.id !== id);
+      saveReminders();
+      renderReminders();
+    }
+
+    function fmtTime12(h, m) {
+      const ap = h >= 12 ? 'pm' : 'am';
+      let h12 = h % 12; if (h12 === 0) h12 = 12;
+      return `${h12}:${pad(m)} ${ap}`;
+    }
+
+    function renderReminders() {
+      const list = document.getElementById('remindersList');
+      list.innerHTML = '';
+      // sort by next occurrence
+      const sorted = [...reminders].sort((a,b) => nextOccurrence(a.hour, a.minute) - nextOccurrence(b.hour, b.minute));
+      for (const r of sorted) {
+        const li = document.createElement('li');
+        const left = document.createElement('span');
+        const t = document.createElement('span');
+        t.className = 'rem-time';
+        t.textContent = fmtTime12(r.hour, r.minute);
+        const meta = document.createElement('span');
+        meta.className = 'rem-meta';
+        meta.textContent = `${r.bellType} bell · ${pad(r.hour)}:${pad(r.minute)}`;
+        left.appendChild(t); left.appendChild(meta);
+
+        const x = document.createElement('button');
+        x.className = 'rem-x';
+        x.type = 'button';
+        x.setAttribute('aria-label', `Remove reminder at ${fmtTime12(r.hour, r.minute)}`);
+        x.innerHTML = '&times;';
+        x.addEventListener('click', () => removeReminder(r.id));
+
+        li.appendChild(left); li.appendChild(x);
+        list.appendChild(li);
+      }
+      if (reminders.length === 0) {
+        setModeActive('modeReminder', 'reminderSummary', false, 'None set');
+        setStatus('status_reminder', 'No reminders scheduled.', false);
+      } else {
+        setModeActive('modeReminder', 'reminderSummary', true, `${reminders.length} scheduled`);
+        const next = sorted[0];
+        const ms = nextOccurrence(next.hour, next.minute) - Date.now();
+        setStatus('status_reminder', `Next: ${fmtTime12(next.hour, next.minute)} (in ${fmtCountdown(ms)})`, true);
+      }
+    }
+
+    document.getElementById('btnRemAdd').addEventListener('click', addReminder);
+
+    loadReminders();
+    reminders.forEach(scheduleReminder);
+    renderReminders();
+    // refresh reminder countdown each second
+    setInterval(() => { if (reminders.length) renderReminders(); }, 30_000);
+
+    // ---------- Hourly ----------
+    let hourlyTimeout = null, hourlyInterval = null;
+
+    function startHourly() {
+      stopHourly(false);
+      const d = new Date();
+      const next = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1, 0, 0, 0);
+      const wait = next.getTime() - d.getTime();
+      hourlyTimeout = setTimeout(() => {
+        ringBell('big');
+        hourlyInterval = setInterval(() => ringBell('big'), 60 * 60 * 1000);
+      }, wait);
+      btn('btnHourlyBell', false); btn('btnStopHourlyBell', true);
+      setModeActive('modeHourly', 'hourlySummary', true, 'on');
+      setStatus('status_hourly', `Next chime at ${pad(next.getHours())}:00.`, true);
+    }
+
+    function stopHourly(updateUI = true) {
+      if (hourlyTimeout) { clearTimeout(hourlyTimeout); hourlyTimeout = null; }
+      if (hourlyInterval) { clearInterval(hourlyInterval); hourlyInterval = null; }
+      if (updateUI) {
+        btn('btnHourlyBell', true); btn('btnStopHourlyBell', false);
+        setModeActive('modeHourly', 'hourlySummary', false, 'Off');
+        setStatus('status_hourly', 'Stopped.', false);
+      }
+    }
+
+    document.getElementById('btnHourlyBell').addEventListener('click', startHourly);
+    document.getElementById('btnStopHourlyBell').addEventListener('click', () => stopHourly(true));
+
+    // ---------- Helpers ----------
+    function btn(id, enabled) {
+      const el = document.getElementById(id);
+      if (el) el.disabled = !enabled;
+    }
+
+    function fmtCountdown(ms) {
+      if (ms <= 0) return '0s';
+      const s = Math.round(ms / 1000);
+      if (s < 60) return `${s}s`;
+      const m = Math.floor(s / 60);
+      const rs = s % 60;
+      if (m < 60) return rs ? `${m}m ${rs}s` : `${m}m`;
+      const h = Math.floor(m / 60);
+      const rm = m % 60;
+      return rm ? `${h}h ${rm}m` : `${h}h`;
+    }
+
+    // Initialize button enabled-state
+    btn('btnPStop', false);
+    btn('btnRStop', false);
+    btn('btnStopHourlyBell', false);
+
+    // Cleanly stop everything when the page goes away
+    window.addEventListener('beforeunload', () => {
+      stopPeriodic(false);
+      stopRandom(false);
+      stopHourly(false);
+      reminderTimers.forEach(clearTimeout);
     });
   </script>
-</head>
-
-<body onload="init()" onunload="cleanUp()">
-  <div id="topRight">
-    <span style="font: 11px arial,sans-serif;">There are <span id="sessionCount"></span> meditators since yesterday. &#128591; </span>
-  </div>
-  <div id="bottomLeft">
-    <button onClick="donate()"><span style="font: 11px arial,sans-serif;">Support this site?</span></button>
-  </div>
-  <div align="center">
-
-    <h1>Awakening Bell</h1>
-
-    Current Time: <span id="theTime">&nbsp;</span>
-    <p>
-    <table width="70%">
-      <tr>
-        <td style="text-align:center">
-          Welcome to the online Awakening Bell, inspired by the teaching of Thich Nhat Hanh. Many people around the
-          world take pleasure
-          in stopping and consciously breathing in and out three times when they hear the sound of the bell.
-          Click below for examples of the sound made by the big and the small bell. Either can be used by inputing a
-          time interval,
-          an exact time, or a random interval. Enjoy, and please email feedback and suggestions to awakeningbelldotorg
-          at gmail.com. <span style="font-size: large;">&#9786;</span>
-        </td>
-      </tr>
-    </table>
-    <div>
-      <table style="width: 100%;">
-        <tr>
-          <td style="text-align:center;">Big Bell</td>
-          <td style="text-align:center;">Small Bell</td>
-        </tr>
-        <tr>
-          <td id="bigBellTD" style="text-align:center;" />
-          <td id="smallBellTD" style="text-align:center;" />
-        </tr>
-      </table>
-      <script>
-        $('#bigBellTD').append(getBell('bigID', 'big', true));
-        $('#smallBellTD').append(getBell('smallID', 'small', true));
-        $('audio,video').mediaelementplayer({
-          audioWidth: 250
-        });
-        var settings = {};
-      </script>
-
-      <div id="accordion">
-        <h3>Periodically</h3>
-        <div>
-          <table style="border: 0;">
-            <tr>
-              <td style="text-align:left;">I would like a small bell to ring every</td>
-              <td><input type="number" id="interval" name="interval" size=4 min="1" max="1440" value=15></td>
-              <td>minutes.</td>
-              <td rowspan=2 style="text-align: center"><button id="btnPStart" onclick="startBells()">Set</button><button
-                  id="btnPStop" onclick="stopBells()">Stop</button></td>
-            </tr>
-            <tr>
-              <td style="text-align:left;">I would like a big bell to ring every</td>
-              <td><input type="number" id="intervalb" name="intervalb" size=4 min="1" max="1440" value=30></td>
-              <td>minutes.</td>
-            </tr>
-            <tr>
-              <td colspan=4 style="text-align:center"><span id="status" style="font-style: italic;">Waiting for
-                  input</span></td>
-            </tr>
-          </table>
-        </div>
-        <h3>Random</h3>
-        <div>
-          <table style="border: 0;">
-            <tr>
-              <td style="text-align:left;">I would like a bell to ring - randomly - between</td>
-              <td><input type="number" id="interval_randA" name="interval_randA" min="1" max="1440" size=4 value=15> and
-                <input type="number" id="interval_randB" name="interval_randB" min="1" max="1440" size=4 value=60>
-                minutes</td>
-              <td style="text-align: center"><button id="btnRStart" onclick="startRandomBell()">Set</button><button
-                  id="btnRStop" onclick="stopRandomBell()">Stop</button></td>
-            </tr>
-            <tr>
-              <td colspan=3 style="text-align:center"><span id="status_rand" style="font-style: italic;">Waiting for
-                  input</span></td>
-            </tr>
-          </table>
-        </div>
-        <h3>Reminder</h3>
-        <div>
-          <table id="reminderBell" style="border: 0;">
-            <tr>
-              <td>
-                <div ng-controller="MainCtrl">
-                  <button ng-click="add()">Add Reminder Bell</button>
-                  <button ng-click="delete()">Delete Reminder Bell</button>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <h3>Hourly</h3>
-        <div>
-          <table style="border: 0;">
-            <tr>
-              <td style="text-align:left;">I would like a bell ringing hourly on the hour.</td>
-              <td style="text-align: center"><button id="btnHourlyBell" onclick="hourlyBell()">Set</button></td>
-              <td style="text-align: center"><button id="btnStopHourlyBell" onclick="stopHourlyBell()">Stop</button>
-              </td>
-            </tr>
-            <td colspan=5 style="text-align:center"><span id="status_hourly" style="font-style: italic;">Waiting for
-                input</span></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Create Periodically bell here -->
-  <table id="hiddenDiv" style="display: none;" />
-  <script>
-    $('#hiddenDiv').append(getBell('G_BigID', 'big'));
-    $('#hiddenDiv').append(getBell('G_SmallID', 'small'));
-  </script>
 </body>
-
 </html>
