@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Privacy policy for the Awakening Bell Chrome extension. No tracking, no network calls, no data collection.">
+  <title>Awakening Bell — Privacy Policy</title>
+  <style>
+    :root {
+      --ink: #2a2520;
+      --ink-soft: #6b6157;
+      --ink-faint: #a59c91;
+      --paper: #fbf6ec;
+      --accent: #b07d3a;
+      --accent-strong: #8a5f26;
+      --rule: rgba(120, 92, 50, 0.18);
+      --serif: 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif;
+      --sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      font-size: 16.5px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 22px 80px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      margin-bottom: 14px;
+    }
+    .eyebrow a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ink-faint);
+    }
+    .eyebrow a:hover { border-bottom-color: var(--accent); }
+
+    h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(36px, 6vw, 52px);
+      letter-spacing: -0.01em;
+      margin: 0 0 6px;
+    }
+
+    .updated {
+      color: var(--ink-faint);
+      font-size: 13.5px;
+      font-style: italic;
+      margin-bottom: 36px;
+    }
+
+    .lede {
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      font-style: italic;
+      margin: 0 0 36px;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: -0.005em;
+      margin: 44px 0 10px;
+    }
+
+    p { margin: 12px 0; }
+
+    strong { color: var(--ink); font-weight: 600; }
+
+    ul { padding-left: 22px; margin: 12px 0; }
+    li { margin: 6px 0; }
+    li code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14px;
+      padding: 1px 6px;
+      background: rgba(176, 125, 58, 0.10);
+      border-radius: 4px;
+      color: var(--accent-strong);
+    }
+
+    a {
+      color: var(--accent-strong);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ink-faint);
+    }
+    a:hover, a:focus-visible {
+      border-bottom-color: var(--accent);
+      outline: none;
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 22px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-faint);
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="eyebrow"><a href="/">Awakening Bell</a></span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: May 18, 2026</p>
+
+    <p class="lede">
+      This page describes how the <strong>Awakening Bell</strong> Chrome extension handles data.
+      The short version: it doesn&rsquo;t.
+    </p>
+
+    <h2>What we collect</h2>
+    <p>
+      <strong>Nothing.</strong> The Awakening Bell extension does not collect, store, transmit, or
+      share any personal information, usage data, telemetry, analytics, crash reports, or any
+      other information about you or your device.
+    </p>
+
+    <h2>What we send to remote servers</h2>
+    <p>
+      <strong>Nothing.</strong> The extension performs zero network requests. There is no
+      backend, no analytics service, no error-reporting endpoint, and no telemetry of any kind.
+      You can verify this by opening Chrome&rsquo;s DevTools network tab while the popup is open
+      &mdash; you will see no outbound traffic.
+    </p>
+
+    <h2>What we store locally</h2>
+    <p>
+      The extension saves your bell preferences on your own computer using Chrome&rsquo;s
+      <code>chrome.storage.local</code> API. This includes:
+    </p>
+    <ul>
+      <li>Your selected interval lengths for the periodic and random bell modes.</li>
+      <li>The list of scheduled reminder times you have added, including the bell type and time of day.</li>
+    </ul>
+    <p>
+      This data is stored only on your device. It is not synced to a Google account, not sent to
+      any server, and not accessible to any other website or extension. You can clear it at any
+      time by removing the extension or by clearing extension storage in Chrome&rsquo;s settings.
+    </p>
+
+    <h2>Permissions the extension uses</h2>
+    <ul>
+      <li><code>alarms</code> &mdash; to schedule bell sounds.</li>
+      <li><code>offscreen</code> &mdash; to play audio from the background (a requirement of Chrome&rsquo;s Manifest&nbsp;V3).</li>
+      <li><code>storage</code> &mdash; to remember your preferences.</li>
+    </ul>
+    <p>
+      The extension does <strong>not</strong> request and does <strong>not</strong> have permission
+      to read or modify any web page, see your browsing history, access your tabs, or use the network.
+    </p>
+
+    <h2>Children</h2>
+    <p>
+      The extension is appropriate for all ages. No data is collected from any user, including
+      users under 13.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      If this policy ever changes, the new version will be published at this URL and a note will
+      be made in this section.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions, feedback, or suggestions:
+      <a href="mailto:awakeningbelldotorg@gmail.com">awakeningbelldotorg@gmail.com</a>
+    </p>
+
+    <footer>
+      <a href="/">&larr; Back to Awakening Bell</a>
+    </footer>
+  </main>
+</body>
+</html>

@@ -96,12 +96,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 252, 245, 0.55);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      text-shadow: 0 1px 2px rgba(255, 250, 240, 0.7), 0 0 18px rgba(255, 250, 240, 0.55);
     }
     .topbar .visitors strong { color: var(--ink); font-weight: 600; }
 
@@ -677,9 +672,54 @@
       }
     }
 
-    // Preview buttons
-    document.querySelectorAll('[data-preview]').forEach(b => {
-      b.addEventListener('click', () => ringBell(b.dataset.preview, b));
+    // Preview buttons — play/stop toggle so a user who tapped the bell
+    // by accident, or who's just heard enough of it, can silence it.
+    const PREVIEW_ICON = {
+      play: 'M8 5v14l11-7z',
+      stop: 'M6 6h12v12H6z',
+    };
+
+    function setPreviewState(btn, playing) {
+      const path = btn.querySelector('svg path');
+      if (path) path.setAttribute('d', playing ? PREVIEW_ICON.stop : PREVIEW_ICON.play);
+      const label = btn.dataset.preview === 'big' ? 'big bell' : 'small bell';
+      btn.setAttribute('aria-label', (playing ? 'Stop ' : 'Play ') + label);
+      btn.classList.toggle('playing', playing);
+    }
+
+    document.querySelectorAll('[data-preview]').forEach(btn => {
+      const audio = btn.dataset.preview === 'big' ? bigBell : smallBell;
+
+      // Keep the icon honest about what the audio is actually doing —
+      // including bells fired by the timers, which use the same <audio>
+      // elements. If the user wants to silence any ringing bell, the
+      // preview button is right there.
+      audio.addEventListener('play', () => setPreviewState(btn, true));
+      audio.addEventListener('ended', () => setPreviewState(btn, false));
+
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          // Stop the other preview if it's playing — only one bell at a time.
+          document.querySelectorAll('[data-preview]').forEach(other => {
+            if (other === btn) return;
+            const otherAudio = other.dataset.preview === 'big' ? bigBell : smallBell;
+            if (!otherAudio.paused) {
+              otherAudio.pause();
+              otherAudio.currentTime = 0;
+              setPreviewState(other, false);
+            }
+          });
+          audio.currentTime = 0;
+          audio.play().catch(() => {});
+          btn.classList.remove('ringing');
+          void btn.offsetWidth;
+          btn.classList.add('ringing');
+        } else {
+          audio.pause();
+          audio.currentTime = 0;
+          setPreviewState(btn, false);
+        }
+      });
     });
 
     // ---------- Clock ----------
@@ -893,6 +933,14 @@
       reminderTimers.set(r.id, id);
     }
 
+    function setReminderDefaults() {
+      const t = new Date(Date.now() + 15 * 60_000);
+      const hh = document.getElementById('rem_hh');
+      const mm = document.getElementById('rem_mm');
+      if (hh) hh.value = t.getHours();
+      if (mm) mm.value = t.getMinutes();
+    }
+
     function addReminder() {
       const bellType = document.getElementById('rem_type').value;
       const hh = readNumber('rem_hh', 0, 23);
@@ -903,6 +951,7 @@
       saveReminders();
       scheduleReminder(r);
       renderReminders();
+      setReminderDefaults();
     }
 
     function removeReminder(id) {
@@ -957,10 +1006,14 @@
     }
 
     document.getElementById('btnRemAdd').addEventListener('click', addReminder);
+    document.getElementById('modeReminder').addEventListener('toggle', (e) => {
+      if (e.target.open) setReminderDefaults();
+    });
 
     loadReminders();
     reminders.forEach(scheduleReminder);
     renderReminders();
+    setReminderDefaults();
     // refresh reminder countdown each second
     setInterval(() => { if (reminders.length) renderReminders(); }, 30_000);
 
