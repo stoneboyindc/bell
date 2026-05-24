@@ -213,6 +213,11 @@
       outline: none;
     }
     .play-btn svg { width: 22px; height: 22px; display: block; margin-left: 2px; }
+    .play-btn.playing svg, .play-btn.paused svg { margin-left: 0; }
+    .play-btn.playing, .play-btn.paused {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
     .play-btn.ringing {
       animation: pulse 1.6s ease-out;
     }
@@ -220,6 +225,49 @@
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 var(--accent-soft); }
       100% { box-shadow: 0 0 0 24px rgba(176, 125, 58, 0); }
+    }
+
+    /* Wrap each preview's buttons so the Stop button can slide in beside
+       the main Play/Pause circle. Stop is collapsed (width 0) when idle and
+       expands to a small circle while a bell is playing or paused. */
+    .preview-controls {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .stop-btn {
+      width: 0;
+      height: 38px;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: width 240ms ease, opacity 200ms ease, transform 240ms ease,
+                  background 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+    .stop-btn svg { width: 14px; height: 14px; display: block; flex: 0 0 auto; }
+    .preview-controls.active .stop-btn {
+      width: 38px;
+      opacity: 1;
+      transform: scale(1);
+      border-color: var(--card-border);
+      background: var(--paper-warm);
+    }
+    .preview-controls.active .stop-btn:hover,
+    .preview-controls.active .stop-btn:focus-visible {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+      outline: none;
     }
 
     /* Modes */
@@ -510,15 +558,25 @@
     <section class="previews" aria-label="Bell previews">
       <div class="preview">
         <div class="preview-label">Big Bell</div>
-        <button class="play-btn" type="button" data-preview="big" aria-label="Play big bell">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        </button>
+        <div class="preview-controls" data-controls="big">
+          <button class="play-btn" type="button" data-preview="big" aria-label="Play big bell">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="stop-btn" type="button" data-stop="big" aria-label="Stop big bell" tabindex="-1" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>
+          </button>
+        </div>
       </div>
       <div class="preview">
         <div class="preview-label">Small Bell</div>
-        <button class="play-btn" type="button" data-preview="small" aria-label="Play small bell">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        </button>
+        <div class="preview-controls" data-controls="small">
+          <button class="play-btn" type="button" data-preview="small" aria-label="Play small bell">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="stop-btn" type="button" data-stop="small" aria-label="Stop small bell" tabindex="-1" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -672,41 +730,85 @@
       }
     }
 
-    // Preview buttons — play/stop toggle so a user who tapped the bell
-    // by accident, or who's just heard enough of it, can silence it.
+    // Preview buttons — three-state controls so a user can pause a long
+    // strike mid-decay (and resume), or stop it outright.
+    //
+    // Per-bell states:
+    //   idle     — Play (▶), Stop hidden. Click Play → start from beginning.
+    //   playing  — Pause (⏸), Stop visible. Click Pause → pause (preserve position).
+    //   paused   — Play (▶), Stop visible. Click Play  → resume from position.
+    // Either active state: click Stop → fully reset to idle.
+    //
+    // The audio element itself is the source of truth — we read paused /
+    // ended / currentTime to derive state, so timer-driven bells (which use
+    // the same <audio> elements) also keep the buttons honest.
+
     const PREVIEW_ICON = {
-      play: 'M8 5v14l11-7z',
-      stop: 'M6 6h12v12H6z',
+      play:  'M8 5v14l11-7z',              // ▶ triangle
+      pause: 'M6 5h4v14H6zm8 0h4v14h-4z',  // ⏸ two bars
     };
 
-    function setPreviewState(btn, playing) {
+    function getBellState(audio) {
+      if (!audio.paused) return 'playing';
+      if (!audio.ended && audio.currentTime > 0) return 'paused';
+      return 'idle';
+    }
+
+    function setPreviewState(btn, state) {
       const path = btn.querySelector('svg path');
-      if (path) path.setAttribute('d', playing ? PREVIEW_ICON.stop : PREVIEW_ICON.play);
-      const label = btn.dataset.preview === 'big' ? 'big bell' : 'small bell';
-      btn.setAttribute('aria-label', (playing ? 'Stop ' : 'Play ') + label);
-      btn.classList.toggle('playing', playing);
+      if (path) {
+        path.setAttribute('d', state === 'playing' ? PREVIEW_ICON.pause : PREVIEW_ICON.play);
+      }
+      const bellLabel = btn.dataset.preview === 'big' ? 'big bell' : 'small bell';
+      const verb = state === 'playing' ? 'Pause '
+                 : state === 'paused'  ? 'Resume '
+                 :                       'Play ';
+      btn.setAttribute('aria-label', verb + bellLabel);
+      btn.classList.toggle('playing', state === 'playing');
+      btn.classList.toggle('paused',  state === 'paused');
+
+      const wrap = btn.closest('.preview-controls');
+      if (wrap) {
+        const active = state === 'playing' || state === 'paused';
+        wrap.classList.toggle('active', active);
+        const stopBtn = wrap.querySelector('[data-stop]');
+        if (stopBtn) {
+          stopBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
+          stopBtn.tabIndex = active ? 0 : -1;
+        }
+      }
+    }
+
+    function refreshPreview(btn, audio) {
+      setPreviewState(btn, getBellState(audio));
     }
 
     document.querySelectorAll('[data-preview]').forEach(btn => {
       const audio = btn.dataset.preview === 'big' ? bigBell : smallBell;
 
-      // Keep the icon honest about what the audio is actually doing —
-      // including bells fired by the timers, which use the same <audio>
-      // elements. If the user wants to silence any ringing bell, the
-      // preview button is right there.
-      audio.addEventListener('play', () => setPreviewState(btn, true));
-      audio.addEventListener('ended', () => setPreviewState(btn, false));
+      // Mirror native audio events into the UI. This also catches timer-
+      // driven bells: the same <audio> element is used for both, so when
+      // a periodic/scheduled bell fires, the Pause / Stop controls appear
+      // and let the user silence it.
+      audio.addEventListener('play',  () => refreshPreview(btn, audio));
+      audio.addEventListener('pause', () => refreshPreview(btn, audio));
+      audio.addEventListener('ended', () => refreshPreview(btn, audio));
 
       btn.addEventListener('click', () => {
-        if (audio.paused) {
-          // Stop the other preview if it's playing — only one bell at a time.
+        const state = getBellState(audio);
+        if (state === 'playing') {
+          audio.pause(); // pause event → refreshes to 'paused'
+        } else if (state === 'paused') {
+          audio.play().catch(() => {}); // play event → refreshes to 'playing'
+        } else {
+          // Idle → fresh strike. Stop any other bell first so only one plays.
           document.querySelectorAll('[data-preview]').forEach(other => {
             if (other === btn) return;
             const otherAudio = other.dataset.preview === 'big' ? bigBell : smallBell;
-            if (!otherAudio.paused) {
+            if (!otherAudio.paused || otherAudio.currentTime > 0) {
               otherAudio.pause();
               otherAudio.currentTime = 0;
-              setPreviewState(other, false);
+              refreshPreview(other, otherAudio);
             }
           });
           audio.currentTime = 0;
@@ -714,12 +816,19 @@
           btn.classList.remove('ringing');
           void btn.offsetWidth;
           btn.classList.add('ringing');
-        } else {
-          audio.pause();
-          audio.currentTime = 0;
-          setPreviewState(btn, false);
         }
       });
+
+      // Stop button: fully reset this bell to idle.
+      const wrap = btn.closest('.preview-controls');
+      const stopBtn = wrap && wrap.querySelector('[data-stop]');
+      if (stopBtn) {
+        stopBtn.addEventListener('click', () => {
+          audio.pause();
+          audio.currentTime = 0;
+          refreshPreview(btn, audio);
+        });
+      }
     });
 
     // ---------- Clock ----------
