@@ -120,6 +120,39 @@
       outline: none;
     }
 
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chrome-ext-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 252, 245, 0.55);
+      border: 1px solid var(--card-border);
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      cursor: pointer;
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      transition: all 180ms ease;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .chrome-ext-btn:hover, .chrome-ext-btn:focus-visible {
+      border-color: var(--accent);
+      background: rgba(176, 125, 58, 0.18);
+      outline: none;
+      transform: scale(1.06);
+    }
+    .chrome-ext-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
     header.hero {
       text-align: center;
       margin-bottom: 32px;
@@ -534,7 +567,26 @@
       <span class="visitors" aria-live="polite">
         <strong id="sessionCount">·</strong> meditators since yesterday <span aria-hidden="true">🙏</span>
       </span>
-      <button class="support-btn" onclick="donate()" type="button">Support this site</button>
+      <div class="topbar-actions">
+        <a class="chrome-ext-btn" href="https://chromewebstore.google.com/detail/awakening-bell/gijdbpkjfapdoaadkbdconkgonfkikgo" target="_blank" rel="noopener" title="Get the Chrome extension" aria-label="Chrome extension">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#4285F4"/>
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="url(#chrome-gradient)"/>
+            <path d="M12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5 9.51472 14.4853 7.5 12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5Z" fill="#FFFFFF"/>
+            <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="#4285F4"/>
+            <path d="M12 2C8.61 2 5.64 3.71 3.91 6.31L7.54 12.6C7.81 12.01 8.24 11.51 8.79 11.19C9.34 10.87 9.97 10.72 10.6 10.75L21.46 10.75C20.48 5.71 16.66 2 12 2Z" fill="#EA4335"/>
+            <path d="M3.91 6.31C2.71 8.01 2 10 2 12C2 17.04 5.61 21.23 10.4 21.92L14.03 15.63C13.56 16.18 12.92 16.54 12.21 16.67C11.5 16.8 10.77 16.69 10.13 16.35L4.71 7.21C4.42 6.91 4.15 6.62 3.91 6.31Z" fill="#FBBC05"/>
+            <path d="M14.03 15.63L19.46 6.32C18.23 4.49 16.33 3.09 14.13 2.41L10.5 8.7C11.16 8.52 11.85 8.51 12.52 8.67C13.19 8.83 13.79 9.16 14.28 9.61L19.7 19.06C21.1 17.27 21.89 15.02 21.99 12.65L12.5 12.65L14.03 15.63Z" fill="#34A853"/>
+            <defs>
+              <linearGradient id="chrome-gradient" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="white" stop-opacity="0.1"/>
+                <stop offset="1" stop-color="black" stop-opacity="0.1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </a>
+        <button class="support-btn" onclick="donate()" type="button">Support this site</button>
+      </div>
     </div>
 
     <header class="hero">
